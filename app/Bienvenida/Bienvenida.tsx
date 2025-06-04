@@ -8,6 +8,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { AntDesign } from '@expo/vector-icons'; // Asegúrate de que AntDesign esté importado
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
+import { navigate } from 'expo-router/build/global-state/routing'; //importa el navigate para cambiar de pantalla
 import { useState } from 'react'; // Importa useEffect
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
@@ -27,7 +28,8 @@ export default function HomeScreen() {
         alert('Por favor ingrese un nombre');
         return;
       }
-
+    
+      navigate('/Principal/Principal')
       await AsyncStorage.setItem('nombre_corredor', nombre);
       alert('Nombre guardado correctamente');
       // Aquí puedes agregar navegación a otra pantalla si lo necesitas
@@ -36,8 +38,6 @@ export default function HomeScreen() {
       alert('Error al guardar el nombre');
     }
   };
-
-  
 
 
 

@@ -5,15 +5,16 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'; //icono de frases motivadoras
+import AsyncStorage from '@react-native-async-storage/async-storage'; //icono de registrar entrenamiento
+import Fontisto from '@expo/vector-icons/Fontisto'; //icono de historial 
+import AntDesign from '@expo/vector-icons/AntDesign';//icono de metas
 import { Image } from 'expo-image';
-import { navigate } from 'expo-router/build/global-state/routing';
 import { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-export default function PantallaPrincipal() {
+export default function Dashboard() {
   // Place all hooks at the top level
   const colorScheme = useColorScheme();
   const textColor = useThemeColor({}, 'text');
@@ -58,6 +59,7 @@ export default function PantallaPrincipal() {
   const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
   
   return (
+    <ThemedView style={styles.fullScreenContainer}>
     <ParallaxScrollView
       headerBackgroundColor={{ 
         light: Colors.palette.lightSlate, 
@@ -77,19 +79,13 @@ export default function PantallaPrincipal() {
         </ThemedText>
       </ThemedView>
 
-      {/* Tarjeta informativa sencilla */}
-      <ThemedView style={[styles.card, { 
-        backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray 
-      }]}>
-        <ThemedText style={styles.cardText}>
-          Registra tu nombre para comenzar a monitorear tu progreso
-        </ThemedText>
-      </ThemedView>
+      
 
+    <View style={styles.botonesContainer}>
      
       {/* Botón para registrar entrenamiento */}
       <TouchableOpacity 
-        style={[styles.registrarButton, { backgroundColor: buttonColor }]} 
+        style={[styles.botonCuadro, { backgroundColor: buttonColor }]} 
         onPress={RegistrarNombre}
       >
         <FontAwesome5 name="cash-register" size={16} color="#fff" style={styles.buttonIcon} />
@@ -102,10 +98,10 @@ export default function PantallaPrincipal() {
       {/* Botón para ver frases motivadoras */}
 
       <TouchableOpacity 
-        style={[styles.frasesButton, { backgroundColor: buttonColor }]} 
+        style={[styles.botonCuadro, { backgroundColor: buttonColor }]} 
         onPress={FrasesMoti}
       >
-        <MaterialIcons name="link" size={16} color="#fff" style={styles.buttonIcon} />
+        <MaterialIcons name="emoji-emotions" size={16} color="#fff" style={styles.buttonIcon} />
         <ThemedText style={styles.loginButtonText}>
           Ver Frases Motivadoras
         </ThemedText>
@@ -114,10 +110,10 @@ export default function PantallaPrincipal() {
       {/* Botón para ver historial */}
      
       <TouchableOpacity 
-        style={[styles.registrarButton, { backgroundColor: buttonColor }]} 
+        style={[styles.botonCuadro, { backgroundColor: buttonColor }]} 
         onPress={VerHistorial}
       >
-        <FontAwesome5 name="cash-register" size={16} color="#fff" style={styles.buttonIcon} />
+        <Fontisto name="history" size={16} color="#fff" style={styles.buttonIcon} />
         <ThemedText style={styles.loginButtonText}>
           Ver Historial
         </ThemedText>
@@ -127,23 +123,28 @@ export default function PantallaPrincipal() {
       {/* Botón para ver metas */}
 
       <TouchableOpacity 
-        style={[styles.frasesButton, { backgroundColor: buttonColor }]} 
+        style={[styles.botonCuadro, { backgroundColor: buttonColor }]} 
         onPress={VerMetas}
       >
-        <MaterialIcons name="link" size={16} color="#fff" style={styles.buttonIcon} />
+        <AntDesign name="star" size={16} color="#fff" style={styles.buttonIcon} />
         <ThemedText style={styles.loginButtonText}>
           Ver Metas
         </ThemedText>
       </TouchableOpacity>
+    </View>
 
        <Nav />
 
     </ParallaxScrollView>
+    </ThemedView>
   );
 }
 
 
 const styles = StyleSheet.create({
+    fullScreenContainer: {
+    flex: 1, // esto hace que ocupe toda la pantalla
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -166,21 +167,20 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: 10,
   },
-  registrarButton: {
-    padding: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginVertical: 10,
+  botonesContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
   },
-  frasesButton: {
-    padding: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginVertical: 10,
-    flexDirection: 'row',
+  botonCuadro: {
+    width: '48%',
+    aspectRatio: 1, 
+    borderRadius: 10,
+    marginBottom: 15,
     justifyContent: 'center',
+    alignItems: 'stretch',
+    padding: 10,
   },
   loginButtonText: {
     color: '#fff',
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonIcon: {
-    marginRight: 8,
+    marginRight: 5,
   },
   card: {
     padding: 15,
