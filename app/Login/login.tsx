@@ -37,7 +37,7 @@ export default function LoginScreen() {
         [
           {
             text: 'OK',
-            onPress: () => router.replace('/(tabs)')
+            onPress: () => router.replace('/Bienvenida/Bienvenida'), // Redirigir a la pantalla de bienvenida
           }
         ]
       );

@@ -19,7 +19,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack initialRouteName="Bienvenida/Bienvenida">
+        <Stack.Screen name="Bienvenida/Bienvenida" options={{ title: 'Bienvenido', headerShown: false }} />
         <Stack.Screen name="login" options={{ title: 'Login', headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />

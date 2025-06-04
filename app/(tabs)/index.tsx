@@ -1,6 +1,5 @@
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
-import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -22,18 +21,6 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       
-      {/* Nuevo botón para navegar al login */}
-      <ThemedView style={styles.stepContainer}>
-        <TouchableOpacity 
-          style={styles.loginButton} 
-          onPress={() => router.push('/login')}
-        >
-          <ThemedText style={styles.loginButtonText}>
-            Ir a Login
-          </ThemedText>
-        </TouchableOpacity>
-      </ThemedView>
-
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
