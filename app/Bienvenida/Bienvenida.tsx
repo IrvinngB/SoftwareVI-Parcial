@@ -1,10 +1,11 @@
-import { HelloWave } from '@/components/HelloWave';
+import Nav from '@/components/Nav';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 import { useState } from 'react';
@@ -13,9 +14,7 @@ import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 export default function HomeScreen() {
   // Place all hooks at the top level
   const colorScheme = useColorScheme();
-  const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
-  const tintColor = useThemeColor({}, 'tint');
   
   // Add state for the nombre input
   const [nombre, setNombre] = useState('');
@@ -41,31 +40,39 @@ export default function HomeScreen() {
   const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
   const inputBorderColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.lightSlate;
   const placeholderColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
-  const credentialsBgColor = colorScheme === 'dark' ? Colors.palette.darkNavy : Colors.palette.lightGray;
-  const credentialsTitleColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
+  const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
   
-  
-  
-
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ 
+        light: Colors.palette.lightSlate, 
+        dark: Colors.palette.darkNavy 
+      }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require('@/assets/images/fondo.jpg')}
+          style={styles.headerImage}
         />
       }>
 
       {/* Contenedor de bienvenida */}
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Bienvenido a Pace & Progress </ThemedText>
-        <HelloWave />
+        <ThemedText type="title" style={{ lineHeight: 40 }}>Bienvenido a Pace & Progress</ThemedText>
+      </ThemedView>
+
+      {/* Tarjeta informativa sencilla */}
+      <ThemedView style={[styles.card, { 
+        backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray 
+      }]}>
+        <ThemedText style={styles.cardText}>
+          Registra tu nombre para comenzar a monitorear tu progreso
+        </ThemedText>
       </ThemedView>
 
       {/* Contenedor de instrucciones */}
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Porfavor ingrese el nombre del corredor</ThemedText>
+        <ThemedText type="subtitle">Ingresa el nombre del corredor</ThemedText>
+        
         <TextInput
           style={[styles.input, { 
             backgroundColor: inputBgColor, 
@@ -74,23 +81,25 @@ export default function HomeScreen() {
           }]}
           value={nombre}
           onChangeText={setNombre}
-          placeholder="Ingrese su nombre"
+          placeholder="Nombre del corredor"
           placeholderTextColor={placeholderColor}
           keyboardType="default"
-          autoCapitalize="none"
+          autoCapitalize="words"
         />
       </ThemedView>
-
       
       {/* Botón para guardar nombre */}
       <TouchableOpacity 
-                style={[styles.loginButton, { backgroundColor: tintColor }]} 
-                onPress={GuardarNombre}
-              >
-                <ThemedText style={styles.loginButtonText}>
-                  Guardar Nombre
-                </ThemedText>
-        </TouchableOpacity>
+        style={[styles.loginButton, { backgroundColor: buttonColor }]} 
+        onPress={GuardarNombre}
+      >
+        <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} />
+        <ThemedText style={styles.loginButtonText}>
+          Guardar Nombre
+        </ThemedText>
+      </TouchableOpacity>
+
+       <Nav />
 
     </ParallaxScrollView>
   );
@@ -101,35 +110,50 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    marginBottom: 15,
+    minHeight: 80
+  
   },
   stepContainer: {
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 20,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
+  headerImage: {
+    height: 200,
+    width: '100%',
     bottom: 0,
     left: 0,
     position: 'absolute',
   },
   input: {
-    padding: 10,
+    padding: 12,
     borderWidth: 1,
     borderRadius: 8,
     width: '100%',
     marginVertical: 10,
   },
   loginButton: {
-    backgroundColor: '#0a7ea4',
-    padding: 15,
+    padding: 14,
     borderRadius: 8,
     alignItems: 'center',
     marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   loginButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  buttonIcon: {
+    marginRight: 8,
+  },
+  card: {
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 15,
+  },
+  cardText: {
+    lineHeight: 20,
+  }
 });
