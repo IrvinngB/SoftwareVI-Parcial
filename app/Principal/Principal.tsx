@@ -74,7 +74,7 @@ export default function Dashboard() {
 
       {/* Contenedor de bienvenida */}
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title" style={{ lineHeight: 40 }}>
+        <ThemedText type="title" style={styles.tituloCentrado}>
             Bienvenido a Pace & Progress, {nombre}
         </ThemedText>
       </ThemedView>
@@ -143,16 +143,20 @@ export default function Dashboard() {
 
 
 const styles = StyleSheet.create({
-    fullScreenContainer: {
-    flex: 1, // esto hace que ocupe toda la pantalla
+   fullScreenContainer: {
+     flex: 1, // esto hace que ocupe toda la pantalla
   },
   titleContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 15,
-    minHeight: 80
-  
+    justifyContent: 'center',
+    marginVertical: 20,
+
+  },
+  tituloCentrado: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: 'bold',
+    lineHeight:20
   },
   navContainer: {
     position: 'absolute',

@@ -20,6 +20,8 @@ export default function Nav() {
       router.push('/Bienvenida/Bienvenida');
     } else if (route === 'Registro') {
       router.push('/Registro/Registro');
+    }else if (route === 'Principal'){
+      router.push('/Principal/Principal');
     } else {
       // Por ahora, solo alertamos que la página no existe
       alert(`La página de ${route} aún no está implementada`);
@@ -38,7 +40,7 @@ export default function Nav() {
       
       <TouchableOpacity 
         style={styles.navItem} 
-        onPress={() => navigateTo('Dashboard')}
+        onPress={() => navigateTo('Principal')}
       >
         <AntDesign name="dashboard" size={24} color={inactiveColor} />
         <ThemedText style={styles.navText}>Dashboard</ThemedText>
