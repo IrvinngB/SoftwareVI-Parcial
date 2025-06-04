@@ -5,16 +5,22 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import AntDesign from '@expo/vector-icons/AntDesign'; //icono de metas
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Fontisto from '@expo/vector-icons/Fontisto'; //icono de historial 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'; //icono de frases motivadoras
 import AsyncStorage from '@react-native-async-storage/async-storage'; //icono de registrar entrenamiento
-import Fontisto from '@expo/vector-icons/Fontisto'; //icono de historial 
-import AntDesign from '@expo/vector-icons/AntDesign';//icono de metas
 import { Image } from 'expo-image';
+import { navigate } from 'expo-router/build/global-state/routing';
 import { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+
+
 
 export default function Dashboard() {
+  
+
   // Place all hooks at the top level
   const colorScheme = useColorScheme();
   const textColor = useThemeColor({}, 'text');
@@ -38,17 +44,22 @@ export default function Dashboard() {
 
   cargarNombre(); 
   
+  //codigo que envia a pantalla de registrar nombre
   const RegistrarNombre = async () =>{
     //poner codigo para cambiar de pantalla
   }
+  //codigo que envia a pantalla de frases motivadoras
    const FrasesMoti = async () =>{
-    //poner codigo para cambiar de pantalla
+    //poner codigo para cambiar pantalla
+    
   } 
+  //codigogo que envia a pantalla de historial
    const VerHistorial = async () =>{
     //poner codigo para cambiar de pantalla
   } 
+  //codigo que envia a la pantalla de ventas
    const VerMetas = async () =>{
-    //poner codigo para cambiar de pantalla
+    navigate('/Metas/Metas');
   } 
 
 
@@ -133,9 +144,9 @@ export default function Dashboard() {
       </TouchableOpacity>
     </View>
     </ParallaxScrollView>
-     <ThemedView style={styles.navContainer}>
-            <Nav />
-          </ThemedView>
+      <ThemedView style={styles.navContainer}>
+          <Nav />
+        </ThemedView>
 
     </ThemedView>
   );
