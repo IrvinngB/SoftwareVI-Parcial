@@ -5,11 +5,9 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { AntDesign } from '@expo/vector-icons'; // Asegúrate de que AntDesign esté importado
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Image } from 'expo-image';
-import { useState } from 'react'; // Importa useEffect
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity si lo vas a usar
 
 export default function HomeScreen() {
   // Place all hooks at the top level
@@ -18,35 +16,31 @@ export default function HomeScreen() {
 
   // Estado para el nombre del corredor (para input y visualización)
   const [nombre, setNombre] = useState('');
+  const [fecha, setFecha] = useState('');
 
-  // Función para guardar el nombre usando AsyncStorage
-  const GuardarNombre = async () => {
+
+  // Función para recuperar el nombre del corredor al cargar la pantalla
+  const obtenerNombre = async () => {
     try {
-      if (nombre.trim() === '') {
-        // Considera usar un modal o un toast en lugar de alert() para mejor UX
-        alert('Por favor ingrese un nombre');
-        return;
+      const nombreGuardado = await AsyncStorage.getItem('nombre_corredor');
+      if (nombreGuardado !== null) {
+        setNombre(nombreGuardado);
       }
-
-      await AsyncStorage.setItem('nombre_corredor', nombre);
-      alert('Nombre guardado correctamente');
-      // Aquí puedes agregar navegación a otra pantalla si lo necesitas
     } catch (error) {
-      console.error('Error al guardar el nombre:', error);
-      alert('Error al guardar el nombre');
+      console.error('Error al recuperar el nombre:', error);
     }
   };
 
-  
-
-
+  useEffect(() => {
+    obtenerNombre();
+  }, []); // El array vacío asegura que se ejecute solo una vez al montar el componente
 
   // Determinar colores para elementos de la interfaz basados en el tema
   const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
   const inputBorderColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.lightSlate;
   const placeholderColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
   const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
-
+  
 
   return (
     // Envuelve todo en un único ThemedView que ocupe toda la pantalla
@@ -56,19 +50,13 @@ export default function HomeScreen() {
           light: Colors.palette.lightSlate,
           dark: Colors.palette.darkNavy
         }}
-        headerImage={
-          <Image
-            source={require('@/assets/images/fondo.jpg')}
-            style={styles.headerImage}
-          />
-        }
-      
+        headerImage={<ThemedView style={styles.headerImage} />}
       >
         {/* Contenedor de bienvenida */}
         <ThemedView style={styles.titleContainer}>
           {/* Ajusta el lineHeight si el texto sigue cortándose, o el fontSize en ThemedText */}
           <ThemedText type="title" style={{ lineHeight: 40 }}>
-            Bienvenido a Pace & Progress
+            Bienvenido {nombre ? nombre : ""} a la ventana de Registro
           </ThemedText>
         </ThemedView>
 
@@ -77,13 +65,32 @@ export default function HomeScreen() {
           backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray
         }]}>
           <ThemedText style={styles.cardText}>
-            Registra tu nombre para comenzar a monitorear tu progreso
+            Registra tus entrenamientos y carreras.
           </ThemedText>
         </ThemedView>
 
-        {/* Contenedor de instrucciones */}
+        {/* Contenedor de Fecha */}
         <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Ingresa el nombre del corredor</ThemedText>
+          <ThemedText type="subtitle">Ingresa fecha:</ThemedText>
+
+          <TextInput
+            style={[styles.input, {
+              backgroundColor: inputBgColor,
+              borderColor: inputBorderColor,
+              color: textColor
+            }]}
+            value={fecha}
+            onChangeText={setFecha}
+            placeholder="Ejemplo: 10-05-2025"
+            placeholderTextColor={placeholderColor}
+            keyboardType="numeric"
+            autoCapitalize="words"
+          />
+        </ThemedView>
+
+        {/* Contenedor de distancia */}
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Ingresa la distancia (KM):</ThemedText>
 
           <TextInput
             style={[styles.input, {
@@ -93,7 +100,7 @@ export default function HomeScreen() {
             }]}
             value={nombre}
             onChangeText={setNombre}
-            placeholder="Ejemplo: Juanito Alimaña"
+            placeholder="Nombre del corredor"
             placeholderTextColor={placeholderColor}
             keyboardType="default"
             autoCapitalize="words"
@@ -103,9 +110,10 @@ export default function HomeScreen() {
         {/* Botón para guardar nombre */}
         <TouchableOpacity
           style={[styles.loginButton, { backgroundColor: buttonColor }]}
-          onPress={GuardarNombre}
+          
         >
-          <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} />
+          {/* Asegúrate de tener AntDesign importado si usas este ícono */}
+          {/* <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} /> */}
           <ThemedText style={styles.loginButtonText}>
             Guardar Nombre
           </ThemedText>
@@ -147,11 +155,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerImage: {
-    height: 200,
-    width: '100%',
+    height: 0,
+    width: 0,
     bottom: 0,
     left: 0,
-    position: 'absolute',
   },
   input: {
     padding: 12,

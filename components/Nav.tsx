@@ -11,7 +11,6 @@ export default function Nav() {
   const colorScheme = useColorScheme();
   
   // Colores según el tema
-  const bgColor = colorScheme === 'dark' ? Colors.palette.darkNavy : Colors.palette.lightGray;
   const activeColor = Colors.palette.slateBlue;
   const inactiveColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.navy;
   
@@ -19,6 +18,8 @@ export default function Nav() {
   const navigateTo = (route: string) => {
     if (route === 'Bienvenida') {
       router.push('/Bienvenida/Bienvenida');
+    } else if (route === 'Registro') {
+      router.push('/Registro/Registro');
     } else {
       // Por ahora, solo alertamos que la página no existe
       alert(`La página de ${route} aún no está implementada`);
