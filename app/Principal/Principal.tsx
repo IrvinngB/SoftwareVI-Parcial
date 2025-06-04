@@ -132,10 +132,11 @@ export default function Dashboard() {
         </ThemedText>
       </TouchableOpacity>
     </View>
-
-       <Nav />
-
     </ParallaxScrollView>
+     <ThemedView style={styles.navContainer}>
+            <Nav />
+          </ThemedView>
+
     </ThemedView>
   );
 }
@@ -152,6 +153,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     minHeight: 80
   
+  },
+  navContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0)', // Fondo transparente para la barra de navegación
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   headerImage: {
     height: 200,
