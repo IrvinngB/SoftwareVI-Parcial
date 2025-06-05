@@ -17,7 +17,6 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 
 
-
 export default function Dashboard() {
   
 
@@ -50,8 +49,7 @@ export default function Dashboard() {
   }
   //codigo que envia a pantalla de frases motivadoras
    const FrasesMoti = async () =>{
-    //poner codigo para cambiar pantalla
-    
+    navigate('/Frases/Frases' as any); // Cambia a la pantalla de frases motivadoras
   } 
   //codigogo que envia a pantalla de historial
    const VerHistorial = async () =>{
@@ -59,7 +57,7 @@ export default function Dashboard() {
   } 
   //codigo que envia a la pantalla de ventas
    const VerMetas = async () =>{
-    navigate('/Metas/Metas');
+    navigate('/Metas/Metas' as any); // Cambia a la pantalla de metas
   } 
 
 

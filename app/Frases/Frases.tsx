@@ -12,7 +12,7 @@ import { navigate } from 'expo-router/build/global-state/routing'; //importa el 
 import { useState } from 'react'; // Importa useEffect
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
-export default function HomeScreen() {
+export default function FrasesScreen() {
   // Place all hooks at the top level
   const colorScheme = useColorScheme();
   const textColor = useThemeColor({}, 'text');
