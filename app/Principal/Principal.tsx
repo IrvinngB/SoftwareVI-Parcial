@@ -53,7 +53,7 @@ export default function Dashboard() {
   } 
   //codigogo que envia a pantalla de historial
    const VerHistorial = async () =>{
-    //poner codigo para cambiar de pantalla
+    navigate('/Historial/Historial' as any); // Cambia a la pantalla de historial
   } 
   //codigo que envia a la pantalla de ventas
    const VerMetas = async () =>{

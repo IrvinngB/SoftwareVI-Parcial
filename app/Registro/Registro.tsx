@@ -6,10 +6,11 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
 import { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity si lo vas a usar
+import { Alert, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity si lo vas a usar
 
-export default function HomeScreen() {
+export default function RegistroScreen() {
   // Place all hooks at the top level
   const colorScheme = useColorScheme();
   const textColor = useThemeColor({}, 'text');
@@ -17,6 +18,8 @@ export default function HomeScreen() {
   // Estado para el nombre del corredor (para input y visualización)
   const [nombre, setNombre] = useState('');
   const [fecha, setFecha] = useState('');
+  const [distancia, setDistancia] = useState('');
+  const [time, setTime] = useState('');
 
 
   // Función para recuperar el nombre del corredor al cargar la pantalla
@@ -33,14 +36,66 @@ export default function HomeScreen() {
 
   useEffect(() => {
     obtenerNombre();
-  }, []); // El array vacío asegura que se ejecute solo una vez al montar el componente
+  }, []);
+
+  // Funcion para guardar el entrenamiento en un archivo
+  const guardarEntrenamiento = async () => {
+    try {
+      // Validate input fields
+      if (!fecha || !distancia || !time) {
+        Alert.alert('Error', 'Por favor completa todos los campos');
+        return;
+      }
+
+      const jsonFilePath = FileSystem.documentDirectory + 'entrenamientos.json';
+      let entrenamientos = [];
+      let maxId = 0;
+
+      // Check if file exists and read current data
+      const fileInfo = await FileSystem.getInfoAsync(jsonFilePath);
+      if (fileInfo.exists) {
+        const fileContent = await FileSystem.readAsStringAsync(jsonFilePath);
+        if (fileContent) {
+          entrenamientos = JSON.parse(fileContent);
+          // Find the highest existing ID
+          if (entrenamientos.length > 0) {
+            maxId = Math.max(...entrenamientos.map((item: { id: any; }) => item.id));
+          }
+        }
+      }
+
+      // Create new entry with auto-generated ID
+      const nuevoEntrenamiento = {
+        id: maxId + 1,
+        nombre: nombre,
+        fecha: fecha,
+        distancia: parseFloat(distancia),
+        tiempo: parseInt(time, 10),
+        pace: (parseInt(time, 10) / parseFloat(distancia)).toFixed(2) // Calculate pace
+      };
+
+      // Add to array and save
+      entrenamientos.push(nuevoEntrenamiento);
+      await FileSystem.writeAsStringAsync(jsonFilePath, JSON.stringify(entrenamientos, null, 2));
+
+      // Clear input fields
+      setFecha('');
+      setDistancia('');
+      setTime('');
+
+      Alert.alert('Éxito', 'Entrenamiento guardado correctamente');
+    } catch (error) {
+      console.error('Error al guardar el entrenamiento:', error);
+      Alert.alert('Error', 'Ocurrió un problema al guardar el entrenamiento');
+    }
+  };
 
   // Determinar colores para elementos de la interfaz basados en el tema
   const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
   const inputBorderColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.lightSlate;
   const placeholderColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
   const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
-  
+
 
   return (
     // Envuelve todo en un único ThemedView que ocupe toda la pantalla
@@ -98,24 +153,41 @@ export default function HomeScreen() {
               borderColor: inputBorderColor,
               color: textColor
             }]}
-            value={nombre}
-            onChangeText={setNombre}
-            placeholder="Nombre del corredor"
+            value={distancia}
+            onChangeText={setDistancia}
+            placeholder="Ejemplo: 5"
             placeholderTextColor={placeholderColor}
-            keyboardType="default"
+            keyboardType="numeric"
             autoCapitalize="words"
           />
         </ThemedView>
 
-        {/* Botón para guardar nombre */}
+        {/* Contenedor de tiempo */}
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Ingresa el tiempo (Minutos  ):</ThemedText>
+
+          <TextInput
+            style={[styles.input, {
+              backgroundColor: inputBgColor,
+              borderColor: inputBorderColor,
+              color: textColor
+            }]}
+            value={time}
+            onChangeText={setTime}
+            placeholder="Ejemplo: 76"
+            placeholderTextColor={placeholderColor}
+            keyboardType="numeric"
+            autoCapitalize="words"
+          />
+        </ThemedView>
+
+        {/* Botón para guardar entrenamiento */}
         <TouchableOpacity
           style={[styles.loginButton, { backgroundColor: buttonColor }]}
-          
+          onPress={guardarEntrenamiento}
         >
-          {/* Asegúrate de tener AntDesign importado si usas este ícono */}
-          {/* <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} /> */}
           <ThemedText style={styles.loginButtonText}>
-            Guardar Nombre
+            Registrar Entrenamiento
           </ThemedText>
         </TouchableOpacity>
 
