@@ -23,6 +23,8 @@ export default function RootLayout() {
         <Stack.Screen name="Bienvenida/Bienvenida" options={{ title: 'Bienvenido', headerShown: false }} />
         <Stack.Screen name="Registro/Registro" options={{ title: 'Registro', headerShown: false }} />
         <Stack.Screen name="Principal/Principal" options={{ title: 'Principal', headerShown: false }} />
+        <Stack.Screen name="Frases/Frases" options={{ title: 'Frases', headerShown: false }} />
+        <Stack.Screen name="Perfil/Perfil" options={{ title: 'Perfil', headerShown: false }} />
         <Stack.Screen name="login" options={{ title: 'Login', headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />

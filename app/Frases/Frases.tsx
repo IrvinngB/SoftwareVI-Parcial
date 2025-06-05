@@ -6,40 +6,25 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { AntDesign } from '@expo/vector-icons'; // Asegúrate de que AntDesign esté importado
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
-import { navigate } from 'expo-router/build/global-state/routing'; //importa el navigate para cambiar de pantalla
 import { useState } from 'react'; // Importa useEffect
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import frases from '@/assets/FrasesData/Frases.json'; //importar el archivo JSON con las frases
+
 
 export default function FrasesScreen() {
   // Place all hooks at the top level
   const colorScheme = useColorScheme();
   const textColor = useThemeColor({}, 'text');
 
-  // Estado para el nombre del corredor (para input y visualización)
-  const [nombre, setNombre] = useState('');
+  // Estado para almacenar la frase actual
+  const [fraseActual, setFraseActual] = useState('');
 
-  // Función para guardar el nombre usando AsyncStorage
-  const GuardarNombre = async () => {
-    try {
-      if (nombre.trim() === '') {
-        // Considera usar un modal o un toast en lugar de alert() para mejor UX
-        alert('Por favor ingrese un nombre');
-        return;
-      }
-    
-      navigate('/Principal/Principal' as any)
-      await AsyncStorage.setItem('nombre_corredor', nombre);
-      alert('Nombre guardado correctamente');
-      // Aquí puedes agregar navegación a otra pantalla si lo necesitas
-    } catch (error) {
-      console.error('Error al guardar el nombre:', error);
-      alert('Error al guardar el nombre');
-    }
+  const mostrarFraseAleatoria = () => {
+    const indiceAleatorio = Math.floor(Math.random() * frases.length);
+    const nuevaFrase = frases[indiceAleatorio].frase;
+    setFraseActual(nuevaFrase);
   };
-
-
 
   // Determinar colores para elementos de la interfaz basados en el tema
   const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
@@ -68,7 +53,7 @@ export default function FrasesScreen() {
         <ThemedView style={styles.titleContainer}>
           {/* Ajusta el lineHeight si el texto sigue cortándose, o el fontSize en ThemedText */}
           <ThemedText type="title" style={{ lineHeight: 40 }}>
-            Bienvenido a Pace & Progress
+            Frase Motivacional
           </ThemedText>
         </ThemedView>
 
@@ -76,38 +61,20 @@ export default function FrasesScreen() {
         <ThemedView style={[styles.card, {
           backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray
         }]}>
-          <ThemedText style={styles.cardText}>
-            Registra tu nombre para comenzar a monitorear tu progreso
+          <ThemedText style={styles.cardText} >
+             {fraseActual || 'Presiona el botón para recibir una frase motivacional.'}
           </ThemedText>
         </ThemedView>
 
-        {/* Contenedor de instrucciones */}
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Ingresa el nombre del corredor</ThemedText>
 
-          <TextInput
-            style={[styles.input, {
-              backgroundColor: inputBgColor,
-              borderColor: inputBorderColor,
-              color: textColor
-            }]}
-            value={nombre}
-            onChangeText={setNombre}
-            placeholder="Ejemplo: Juanito Alimaña"
-            placeholderTextColor={placeholderColor}
-            keyboardType="default"
-            autoCapitalize="words"
-          />
-        </ThemedView>
-
-        {/* Botón para guardar nombre */}
+        {/* Botón para generar nueva frase */}
         <TouchableOpacity
-          style={[styles.loginButton, { backgroundColor: buttonColor }]}
-          onPress={GuardarNombre}
+          style={[styles.frasesButton, { backgroundColor: buttonColor }]}
+          onPress={mostrarFraseAleatoria}
         >
           <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} />
           <ThemedText style={styles.loginButtonText}>
-            Guardar Nombre
+            Generar Frase
           </ThemedText>
         </TouchableOpacity>
 
@@ -142,10 +109,6 @@ const styles = StyleSheet.create({
     // Elimina minHeight para que el contenido decida la altura
     // minHeight: 80, // Comentado o eliminado
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 20,
-  },
   headerImage: {
     height: 200,
     width: '100%',
@@ -153,14 +116,7 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
-  input: {
-    padding: 12,
-    borderWidth: 1,
-    borderRadius: 8,
-    width: '100%',
-    marginVertical: 10,
-  },
-  loginButton: {
+  frasesButton: {
     padding: 14,
     borderRadius: 8,
     alignItems: 'center',
@@ -177,11 +133,13 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   card: {
-    padding: 15,
+    padding: 60,
     borderRadius: 8,
     marginBottom: 15,
   },
   cardText: {
     lineHeight: 20,
+    fontSize: 18,
+    textAlign: 'center',
   }
 });
