@@ -44,8 +44,8 @@ export default function Dashboard() {
   cargarNombre(); 
   
   //codigo que envia a pantalla de registrar nombre
-  const RegistrarNombre = async () =>{
-    //poner codigo para cambiar de pantalla
+  const RegistrarEntreno = async () =>{
+    navigate('/Registro/Registro' as any); // Cambia a la pantalla de registrar entrenamiento
   }
   //codigo que envia a pantalla de frases motivadoras
    const FrasesMoti = async () =>{
@@ -95,7 +95,7 @@ export default function Dashboard() {
       {/* Botón para registrar entrenamiento */}
       <TouchableOpacity 
         style={[styles.botonCuadro, { backgroundColor: buttonColor }]} 
-        onPress={RegistrarNombre}
+        onPress={RegistrarEntreno}
       >
         <FontAwesome5 name="cash-register" size={16} color="#fff" style={styles.buttonIcon} />
         <ThemedText style={styles.loginButtonText}>
