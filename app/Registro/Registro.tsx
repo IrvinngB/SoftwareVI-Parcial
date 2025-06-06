@@ -1,4 +1,4 @@
-import Nav from '@/components/Nav'; // Asegúrate de que Nav esté importado
+import Nav from '@/components/Nav';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -6,9 +6,10 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as FileSystem from 'expo-file-system';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, TextInput, TouchableOpacity } from 'react-native'; // Importa TouchableOpacity si lo vas a usar
+import { Alert, Platform, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 export default function RegistroScreen() {
   // Place all hooks at the top level
@@ -20,7 +21,10 @@ export default function RegistroScreen() {
   const [fecha, setFecha] = useState('');
   const [distancia, setDistancia] = useState('');
   const [time, setTime] = useState('');
-
+  
+  // Estados para el DatePicker
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Función para recuperar el nombre del corredor al cargar la pantalla
   const obtenerNombre = async () => {
@@ -37,6 +41,24 @@ export default function RegistroScreen() {
   useEffect(() => {
     obtenerNombre();
   }, []);
+    // Función para manejar el cambio de fecha
+  const onChange = (event: any, selectedDate?: Date) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === 'ios');
+    setDate(currentDate);
+    
+    // Formato de fecha: DD-MM-YYYY
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexed
+    const year = currentDate.getFullYear();
+    
+    setFecha(`${day}-${month}-${year}`);
+  };
+  
+  // Función para mostrar el DatePicker
+  const showDatepicker = () => {
+    setShowDatePicker(true);
+  };
 
   // Funcion para guardar el entrenamiento en un archivo
   const guardarEntrenamiento = async () => {
@@ -77,6 +99,14 @@ export default function RegistroScreen() {
       // Add to array and save
       entrenamientos.push(nuevoEntrenamiento);
       await FileSystem.writeAsStringAsync(jsonFilePath, JSON.stringify(entrenamientos, null, 2));
+
+      // Para verificar lo que se acaba de guardar
+      try {
+        const savedContent = await FileSystem.readAsStringAsync(jsonFilePath);
+        console.log('Contenido actual del archivo:', JSON.parse(savedContent));
+      } catch (error) {
+        console.error('Error al leer el archivo guardado:', error);
+      }
 
       // Clear input fields
       setFecha('');
@@ -128,19 +158,28 @@ export default function RegistroScreen() {
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">Ingresa fecha:</ThemedText>
 
-          <TextInput
+          <TouchableOpacity 
+            onPress={showDatepicker}
             style={[styles.input, {
               backgroundColor: inputBgColor,
               borderColor: inputBorderColor,
-              color: textColor
+              justifyContent: 'center' // Para centrar el texto verticalmente
             }]}
-            value={fecha}
-            onChangeText={setFecha}
-            placeholder="Ejemplo: 10-05-2025"
-            placeholderTextColor={placeholderColor}
-            keyboardType="numeric"
-            autoCapitalize="words"
-          />
+          >
+            <ThemedText>
+              {fecha ? fecha : "Seleccionar fecha"}
+            </ThemedText>
+          </TouchableOpacity>
+          
+          {showDatePicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode="date"
+              display="default"
+              onChange={onChange}
+            />
+          )}
         </ThemedView>
 
         {/* Contenedor de distancia */}
