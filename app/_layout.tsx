@@ -24,8 +24,9 @@ export default function RootLayout() {
         <Stack.Screen name="Registro/Registro" options={{ title: 'Registro', headerShown: false }} />
         <Stack.Screen name="Principal/Principal" options={{ title: 'Principal', headerShown: false }} />
         <Stack.Screen name="Frases/Frases" options={{ title: 'Frases', headerShown: false }} />
-        <Stack.Screen name="Perfil/Perfil" options={{ title: 'Perfil', headerShown: false }} />
-        <Stack.Screen name="login" options={{ title: 'Login', headerShown: false }} />
+        <Stack.Screen name="Historial/Historial" options={{ title: 'Historial', headerShown: false }} />
+        <Stack.Screen name="Metas/Metas" options={{ title: 'Metas', headerShown: false }} />
+        <Stack.Screen name="Login/login" options={{ title: 'Login', headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

@@ -13,15 +13,18 @@ export default function Nav() {
   // Colores según el tema
   const activeColor = Colors.palette.slateBlue;
   const inactiveColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.navy;
-  
-  // Navegación a una ruta
+    // Navegación a una ruta
   const navigateTo = (route: string) => {
     if (route === 'Bienvenida') {
       router.push('/Bienvenida/Bienvenida');
     } else if (route === 'Registro') {
       router.push('/Registro/Registro');
-    }else if (route === 'Principal'){
+    } else if (route === 'Principal') {
       router.push('/Principal/Principal');
+    } else if (route === 'Historial') {
+      router.push('/Historial/Historial');
+    } else if (route === 'Metas') {
+      router.push('/Metas/Metas');
     } else {
       // Por ahora, solo alertamos que la página no existe
       alert(`La página de ${route} aún no está implementada`);
