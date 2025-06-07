@@ -4,6 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { STORAGE_PATHS } from '@/utils/storage'; // Importa el archivo de utilidades de almacenamiento
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as FileSystem from 'expo-file-system';
@@ -20,6 +21,7 @@ export default function RegistroScreen() {
   const [fecha, setFecha] = useState('');
   const [distancia, setDistancia] = useState('');
   const [time, setTime] = useState('');
+  const [tipoEntrenamiento, setTipoEntrenamiento] = useState(''); // Estado para el tipo de entrenamiento
   
   // Estados para el DatePicker
   const [date, setDate] = useState(new Date());
@@ -61,7 +63,7 @@ export default function RegistroScreen() {
   const guardarEntrenamiento = async () => {
     try {
       // Validate input fields
-      if (!fecha || !distancia || !time) {
+      if (!fecha || !distancia || !time || !tipoEntrenamiento) {
         Alert.alert('Error', 'Por favor completa todos los campos');
         return;
       }
@@ -73,7 +75,7 @@ export default function RegistroScreen() {
         await FileSystem.makeDirectoryAsync(dataDir, { intermediates: true });
       }
       
-      const jsonFilePath = dataDir + 'entrenamientos.json';
+      const jsonFilePath = STORAGE_PATHS.ENTRENAMIENTOS;
       let entrenamientos = [];
       let maxId = 0;
 
@@ -97,7 +99,8 @@ export default function RegistroScreen() {
         fecha: fecha,
         distancia: parseFloat(distancia),
         tiempo: parseInt(time, 10),
-        pace: (parseInt(time, 10) / parseFloat(distancia)).toFixed(2) // Calculate pace
+        pace: (parseInt(time, 10) / parseFloat(distancia)).toFixed(2), // Calculate ritmo
+        tipoEntrenamiento: tipoEntrenamiento // Add tipoEntrenamiento field
       };
 
       // Add to array and save
@@ -116,6 +119,8 @@ export default function RegistroScreen() {
       setFecha('');
       setDistancia('');
       setTime('');
+      setTipoEntrenamiento(''); 
+
 
       Alert.alert('Éxito', 'Entrenamiento guardado correctamente');
     } catch (error) {
@@ -220,6 +225,24 @@ export default function RegistroScreen() {
             placeholder="Ejemplo: 76"
             placeholderTextColor={placeholderColor}
             keyboardType="numeric"
+            autoCapitalize="words"
+          />
+        </ThemedView>
+
+        <ThemedView style={styles.stepContainer}>
+          <ThemedText type="subtitle">Ingrese tipo de entrenamiento: </ThemedText>
+
+          <TextInput
+            style={[styles.input, {
+              backgroundColor: inputBgColor,
+              borderColor: inputBorderColor,
+              color: textColor
+            }]}
+            value={tipoEntrenamiento}
+            onChangeText={setTipoEntrenamiento}
+            placeholder="Ejemplo: Carrera, Entrenamiento, Competencia"
+            placeholderTextColor={placeholderColor}
+            keyboardType="default"
             autoCapitalize="words"
           />
         </ThemedView>

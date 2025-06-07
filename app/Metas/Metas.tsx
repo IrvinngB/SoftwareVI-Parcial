@@ -318,23 +318,29 @@ const styles = StyleSheet.create({
   cardText: {
     lineHeight: 20,
   },  // Estilos nuevos para la sección de metas
-  metaActualContainer: {
+    metaActualContainer: {
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.05)',
-    padding: 10,
+    padding: 15,
     borderRadius: 8,
+    width: '100%',  // Asegurar que el contenedor ocupe todo el ancho disponible
+    flexWrap: 'wrap', // Permitir que el contenido se ajuste en pantallas pequeñas
   },
   metaActualText: {
     fontWeight: 'bold',
+    flex: 1,        // Permitir que el texto tome el espacio disponible
+    marginRight: 10, // Dar espacio entre el texto y el botón
   },
   smallButton: {
+    backgroundColor: Colors.palette.slateBlue,
     padding: 8,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    minWidth: 70,    // Asegurar un ancho mínimo para el botón
   },
   smallButtonText: {
     color: '#fff',

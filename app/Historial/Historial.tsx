@@ -4,6 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { STORAGE_PATHS } from '@/utils/storage';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
@@ -17,6 +18,7 @@ interface Entrenamiento {
     distancia: number;
     tiempo: number;
     pace: string;
+    tipoEntrenamiento: string;
 }
 
 export default function HistorialScreen() {
@@ -46,7 +48,7 @@ export default function HistorialScreen() {
     const cargarEntrenamientos = async (): Promise<Entrenamiento[]> => {
         setIsLoading(true);
         try {
-            const jsonFilePath = FileSystem.documentDirectory + 'entrenamientos.json';
+            const jsonFilePath = STORAGE_PATHS.ENTRENAMIENTOS;
             const fileInfo = await FileSystem.getInfoAsync(jsonFilePath);
 
             if (fileInfo.exists) {
@@ -170,9 +172,11 @@ export default function HistorialScreen() {
                         {/* Header row */}
                         <ThemedView style={[styles.tableRow, styles.tableHeader]}>
                             <ThemedText style={[styles.tableCell, styles.headerCell]}>Fecha</ThemedText>
+                            <ThemedText style={[styles.tableCell, styles.headerCell]}>Tipo</ThemedText>
                             <ThemedText style={[styles.tableCell, styles.headerCell]}>Distancia (km)</ThemedText>
                             <ThemedText style={[styles.tableCell, styles.headerCell]}>Tiempo (min)</ThemedText>
                             <ThemedText style={[styles.tableCell, styles.headerCell]}>Ritmo (min/km)</ThemedText>
+
                             <ThemedText style={[styles.tableCell, styles.headerCell, styles.actionCell]}>Acción</ThemedText>
                         </ThemedView>
 
@@ -180,6 +184,7 @@ export default function HistorialScreen() {
                         {entrenamientos.map((item: Entrenamiento) => (
                             <ThemedView key={item.id} style={styles.tableRow}>
                                 <ThemedText style={styles.tableCell}>{item.fecha}</ThemedText>
+                                <ThemedText style={styles.tableCell}>{item.tipoEntrenamiento || "N/A"}</ThemedText>
                                 <ThemedText style={styles.tableCell}>{item.distancia}</ThemedText>
                                 <ThemedText style={styles.tableCell}>{item.tiempo}</ThemedText>
                                 <ThemedText style={styles.tableCell}>{item.pace}</ThemedText>
@@ -220,7 +225,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         marginBottom: 80, // Add space at bottom to prevent content from being hidden by nav
     },
-    tableRow: {
+     tableRow: {
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
@@ -231,8 +236,9 @@ const styles = StyleSheet.create({
     },
     tableCell: {
         flex: 1,
-        padding: 8,
+        padding: 6, // Reducir un poco el padding para acomodar más columnas
         textAlign: 'center',
+        fontSize: 12, // Reducir el tamaño de la fuente para mejor visualización
     },
     headerCell: {
         fontWeight: 'bold',
