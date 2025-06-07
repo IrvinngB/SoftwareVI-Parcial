@@ -5,6 +5,7 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import AntDesign from '@expo/vector-icons/AntDesign'; //icono de metas
+import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Fontisto from '@expo/vector-icons/Fontisto'; //icono de historial 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'; //icono de frases motivadoras
@@ -14,6 +15,7 @@ import { Image } from 'expo-image';
 import { navigate } from 'expo-router/build/global-state/routing';
 import { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 
 // Definir el tipo para un entrenamiento (igual que en Historial.tsx)
 interface Entrenamiento {
@@ -155,6 +157,7 @@ export default function Dashboard() {
       }>
 
       {/* Contenedor de bienvenida */}
+      
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.tituloCentrado}>
             Bienvenido a Pace & Progress, {nombre}
@@ -166,9 +169,21 @@ export default function Dashboard() {
         <ThemedView style={[styles.progressCard, {
           backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray
         }]}>
-          <ThemedText style={styles.progressTitle}>
-            Progreso de tu meta mensual
-          </ThemedText>
+            <View style={{ 
+              flexDirection: 'row', 
+              alignItems: 'baseline', 
+              marginBottom: 10 
+            }}>
+              <Entypo 
+                name="calendar" 
+                size={16} 
+                color={textColor} 
+                style={{ marginRight: 10, marginTop: 2 }} 
+              />
+              <ThemedText style={styles.progressTitle}>
+                Progreso de tu meta mensual
+              </ThemedText>
+            </View>
           
           <ThemedText style={styles.progressDetails}>
             {distanciaTotal.toFixed(1)} KM de {metaActual} KM ({porcentajeCompletado.toFixed(1)}%)
@@ -201,7 +216,7 @@ export default function Dashboard() {
         style={[styles.botonCuadro, { backgroundColor: buttonColor }]} 
         onPress={RegistrarEntreno}
       >
-        <FontAwesome5 name="cash-register" size={16} color="#fff" style={styles.buttonIcon} />
+        <FontAwesome5 name="running" size={16} color="#fff" style={styles.buttonIcon} />
         <ThemedText style={styles.loginButtonText}>
           Registrar Entrenamiento
         </ThemedText>

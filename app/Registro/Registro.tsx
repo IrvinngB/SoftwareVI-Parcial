@@ -8,6 +8,7 @@ import { STORAGE_PATHS } from '@/utils/storage'; // Importa el archivo de utilid
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as FileSystem from 'expo-file-system';
+import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
 import { Alert, Platform, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
@@ -144,7 +145,12 @@ export default function RegistroScreen() {
           light: Colors.palette.lightSlate,
           dark: Colors.palette.darkNavy
         }}
-        headerImage={<ThemedView style={styles.headerImage} />}
+        headerImage={
+          <Image
+            source={require('@/assets/images/carrera.jpg')}
+            style={styles.headerImage}
+          />
+        }
       >
         {/* Contenedor de bienvenida */}
         <ThemedView style={styles.titleContainer}>
@@ -289,10 +295,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerImage: {
-    height: 0,
-    width: 0,
+    height: 200,
+    width: '100%',
     bottom: 0,
     left: 0,
+    position: 'absolute',
   },
   input: {
     padding: 12,

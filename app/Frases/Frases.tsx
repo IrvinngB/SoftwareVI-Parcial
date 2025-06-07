@@ -42,7 +42,7 @@ export default function FrasesScreen() {
         }}
         headerImage={
           <Image
-            source={require('@/assets/images/fondo.jpg')}
+            source={require('@/assets/images/Frases.jpg')}
             style={styles.headerImage}
           />
         }

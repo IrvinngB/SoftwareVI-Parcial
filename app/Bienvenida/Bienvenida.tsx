@@ -73,7 +73,7 @@ export default function HomeScreen() {
         }}
         headerImage={
           <Image
-            source={require('@/assets/images/fondo.jpg')}
+            source={require('@/assets/images/Bienvenida.jpg')}
             style={styles.headerImage}
           />
         }

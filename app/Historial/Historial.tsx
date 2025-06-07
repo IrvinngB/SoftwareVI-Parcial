@@ -8,9 +8,9 @@ import { STORAGE_PATHS } from '@/utils/storage';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
+import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, TouchableOpacity } from 'react-native';
-
 // Definir el tipo para un entrenamiento
 interface Entrenamiento {
     id: string;
@@ -133,7 +133,12 @@ export default function HistorialScreen() {
                     light: Colors.palette.lightSlate,
                     dark: Colors.palette.darkNavy
                 }}
-                headerImage={<ThemedView style={styles.headerImage} />}
+                headerImage={
+          <Image
+            source={require('@/assets/images/Historial.jpg')}
+            style={styles.headerImage}
+          />
+        }
             >
                 {/* Contenedor de bienvenida */}
                 <ThemedView style={styles.titleContainer}>
@@ -292,11 +297,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     headerImage: {
-        height: 0,
-        width: 0,
-        bottom: 0,
-        left: 0,
-    },
+    height: 200,
+    width: '100%',
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+  },
     loading: {
         marginVertical: 20,
     },

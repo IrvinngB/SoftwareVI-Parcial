@@ -4,10 +4,14 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
+import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+
+
 
 export default function MetasScreen() {
   // Place all hooks at the top level
@@ -159,7 +163,12 @@ export default function MetasScreen() {
           light: Colors.palette.lightSlate,
           dark: Colors.palette.darkNavy
         }}
-        headerImage={<ThemedView style={styles.headerImage} />}
+        headerImage={
+          <Image
+            source={require('@/assets/images/Metas.jpg')}
+            style={styles.headerImage}
+          />
+        }
       >
         
 
@@ -227,7 +236,21 @@ export default function MetasScreen() {
           backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray,
           marginTop: 20
         }]}>
-          <ThemedText style={styles.cardTitle}>Tus Metas</ThemedText>
+          <View style={{ 
+              flexDirection: 'row', 
+              alignItems: 'baseline', 
+              marginBottom: 10 
+            }}>
+              <FontAwesome5
+                name="bullseye" 
+                size={16} 
+                color={textColor} 
+                style={{ marginRight: 10, marginTop: 2 }} 
+              />
+              <ThemedText style={styles.titleContainer}>
+                Progreso de tu meta mensual
+              </ThemedText>
+            </View>
           
           {metas.length > 0 ? (
             metas.map((meta, index) => (
@@ -282,10 +305,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerImage: {
-    height: 0,
-    width: 0,
+    height: 200,
+    width: '100%',
     bottom: 0,
     left: 0,
+    position: 'absolute',
   },
   input: {
     padding: 12,
