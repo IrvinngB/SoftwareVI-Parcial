@@ -1,4 +1,3 @@
-import Nav from '@/components/Nav';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -58,9 +57,7 @@ export default function RegistroScreen() {
   // Función para mostrar el DatePicker
   const showDatepicker = () => {
     setShowDatePicker(true);
-  };
-
-  // Funcion para guardar el entrenamiento en un archivo
+  };  // Funcion para guardar el entrenamiento en un archivo
   const guardarEntrenamiento = async () => {
     try {
       // Validate input fields
@@ -68,8 +65,15 @@ export default function RegistroScreen() {
         Alert.alert('Error', 'Por favor completa todos los campos');
         return;
       }
-
-      const jsonFilePath = FileSystem.documentDirectory + 'entrenamientos.json';
+      
+      // Crear la carpeta data si no existe
+      const dataDir = FileSystem.documentDirectory + 'data/';
+      const dirInfo = await FileSystem.getInfoAsync(dataDir);
+      if (!dirInfo.exists) {
+        await FileSystem.makeDirectoryAsync(dataDir, { intermediates: true });
+      }
+      
+      const jsonFilePath = dataDir + 'entrenamientos.json';
       let entrenamientos = [];
       let maxId = 0;
 
@@ -232,10 +236,6 @@ export default function RegistroScreen() {
 
       </ParallaxScrollView>
 
-      {/* La barra de navegación debe estar fuera del ParallaxScrollView pero dentro del ThemedView principal */}
-      <ThemedView style={styles.navContainer}>
-        <Nav />
-      </ThemedView>
     </ThemedView>
   );
 }

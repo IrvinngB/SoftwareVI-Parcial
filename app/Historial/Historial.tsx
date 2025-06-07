@@ -1,4 +1,3 @@
-import Nav from '@/components/Nav';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -209,10 +208,7 @@ export default function HistorialScreen() {
                 )}
             </ParallaxScrollView>
 
-            {/* La barra de navegación debe estar fuera del ParallaxScrollView pero dentro del ThemedView principal */}
-            <ThemedView style={styles.navContainer}>
-                <Nav />
-            </ThemedView>
+            
         </ThemedView>
     );
 }

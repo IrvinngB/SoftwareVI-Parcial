@@ -1,15 +1,14 @@
-import Nav from '@/components/Nav'; // Asegúrate de que Nav esté importado
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { AntDesign } from '@expo/vector-icons'; // Asegúrate de que AntDesign esté importado
+import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
-import { navigate } from 'expo-router/build/global-state/routing'; //importa el navigate para cambiar de pantalla
-import { useState } from 'react'; // Importa useEffect
+import { navigate } from 'expo-router/build/global-state/routing';
+import { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 export default function HomeScreen() {
@@ -19,6 +18,24 @@ export default function HomeScreen() {
 
   // Estado para el nombre del corredor (para input y visualización)
   const [nombre, setNombre] = useState('');
+  const [isChangingName, setIsChangingName] = useState(false);
+
+  // Verificar si ya existe un nombre guardado cuando se carga la página
+  useEffect(() => {
+    const verificarNombre = async () => {
+      try {
+        const nombreGuardado = await AsyncStorage.getItem('nombre_corredor');
+        if (nombreGuardado !== null && nombreGuardado.trim() !== '') {
+          setNombre(nombreGuardado);
+          setIsChangingName(true); // Indicar que estamos cambiando el nombre
+        }
+      } catch (error) {
+        console.error('Error al verificar el nombre:', error);
+      }
+    };
+    
+    verificarNombre();
+  }, []);
 
   // Función para guardar el nombre usando AsyncStorage
   const GuardarNombre = async () => {
@@ -29,24 +46,22 @@ export default function HomeScreen() {
         return;
       }
     
-      navigate('/Principal/Principal' as any)
       await AsyncStorage.setItem('nombre_corredor', nombre);
       alert('Nombre guardado correctamente');
-      // Aquí puedes agregar navegación a otra pantalla si lo necesitas
+      
+      // Siempre redirigir al Dashboard después de guardar el nombre
+      navigate('/Principal/Principal' as any);
     } catch (error) {
       console.error('Error al guardar el nombre:', error);
       alert('Error al guardar el nombre');
     }
   };
 
-
-
   // Determinar colores para elementos de la interfaz basados en el tema
   const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
   const inputBorderColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.lightSlate;
   const placeholderColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
   const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
-
 
   return (
     // Envuelve todo en un único ThemedView que ocupe toda la pantalla
@@ -62,13 +77,12 @@ export default function HomeScreen() {
             style={styles.headerImage}
           />
         }
-      
       >
         {/* Contenedor de bienvenida */}
         <ThemedView style={styles.titleContainer}>
           {/* Ajusta el lineHeight si el texto sigue cortándose, o el fontSize en ThemedText */}
           <ThemedText type="title" style={{ lineHeight: 40 }}>
-            Bienvenido a Pace & Progress
+            {isChangingName ? 'Cambiar Nombre de Usuario' : 'Bienvenido a Pace & Progress'}
           </ThemedText>
         </ThemedView>
 
@@ -77,13 +91,17 @@ export default function HomeScreen() {
           backgroundColor: colorScheme === 'dark' ? Colors.palette.navy : Colors.palette.lightGray
         }]}>
           <ThemedText style={styles.cardText}>
-            Registra tu nombre para comenzar a monitorear tu progreso
+            {isChangingName 
+              ? 'Ingresa tu nuevo nombre para continuar' 
+              : 'Registra tu nombre para comenzar a monitorear tu progreso'}
           </ThemedText>
         </ThemedView>
 
         {/* Contenedor de instrucciones */}
         <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Ingresa el nombre del corredor</ThemedText>
+          <ThemedText type="subtitle">
+            {isChangingName ? 'Nuevo nombre:' : 'Ingresa el nombre del corredor'}
+          </ThemedText>
 
           <TextInput
             style={[styles.input, {
@@ -107,15 +125,28 @@ export default function HomeScreen() {
         >
           <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} />
           <ThemedText style={styles.loginButtonText}>
-            Guardar Nombre
+            {isChangingName ? 'Actualizar Nombre' : 'Guardar Nombre'}
           </ThemedText>
         </TouchableOpacity>
+
+        {/* Botón para cancelar solo si está cambiando el nombre */}
+        {isChangingName && (
+          <TouchableOpacity
+            style={[styles.cancelButton, { backgroundColor: Colors.palette.lightSlate }]}
+            onPress={() => navigate('/Principal/Principal' as any)}
+          >
+            <AntDesign name="close" size={16} color="#fff" style={styles.buttonIcon} />
+            <ThemedText style={styles.loginButtonText}>
+              Cancelar
+            </ThemedText>
+          </TouchableOpacity>
+        )}
 
       </ParallaxScrollView>
 
       {/* La barra de navegación debe estar fuera del ParallaxScrollView pero dentro del ThemedView principal */}
       <ThemedView style={styles.navContainer}>
-        <Nav />
+         
       </ThemedView>
     </ThemedView>
   );
@@ -139,8 +170,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     marginBottom: 15,
-    // Elimina minHeight para que el contenido decida la altura
-    // minHeight: 80, // Comentado o eliminado
   },
   stepContainer: {
     gap: 8,
@@ -165,6 +194,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  cancelButton: {
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginVertical: 5,
     flexDirection: 'row',
     justifyContent: 'center',
   },

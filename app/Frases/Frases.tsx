@@ -1,4 +1,4 @@
-import Nav from '@/components/Nav'; // Asegúrate de que Nav esté importado
+import frases from '@/assets/FrasesData/Frases.json'; //importar el archivo JSON con las frases
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -9,7 +9,6 @@ import { AntDesign } from '@expo/vector-icons'; // Asegúrate de que AntDesign e
 import { Image } from 'expo-image';
 import { useState } from 'react'; // Importa useEffect
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import frases from '@/assets/FrasesData/Frases.json'; //importar el archivo JSON con las frases
 
 
 export default function FrasesScreen() {
@@ -80,10 +79,7 @@ export default function FrasesScreen() {
 
       </ParallaxScrollView>
 
-      {/* La barra de navegación debe estar fuera del ParallaxScrollView pero dentro del ThemedView principal */}
-      <ThemedView style={styles.navContainer}>
-        <Nav />
-      </ThemedView>
+      
     </ThemedView>
   );
 }
