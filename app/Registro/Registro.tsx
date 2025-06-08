@@ -329,6 +329,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'center',
+    elevation: 4,
   },
   loginButtonText: {
     color: '#fff',

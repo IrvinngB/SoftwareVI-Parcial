@@ -403,6 +403,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     flexDirection: 'row',
     justifyContent: 'center',
+    elevation: 4,
   },
   botonesContainer: {
     padding: 20,
@@ -451,6 +452,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 20,
     marginBottom: 15,
+    elevation: 4,
   },
   progressTitle: {
     fontSize: 18,
