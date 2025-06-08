@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
         margin: 2,
         flex: 0.7,
         flexDirection: 'row', // Asegurar que el contenido se centre horizontalmente
+        elevation: 4,
     },
     deleteButtonText: {
         color: '#fff',

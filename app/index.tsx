@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'center',
+    elevation: 4,
   },
   cancelButton: {
     padding: 14,
@@ -204,6 +205,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     flexDirection: 'row',
     justifyContent: 'center',
+    elevation: 4,
   },
   loginButtonText: {
     color: '#fff',
