@@ -1,4 +1,4 @@
-# Documentación del Proyecto  Peace & Progress
+# Documentación del Proyecto Peace & Progress
 
 ## Índice
 1. [Descripción General](#descripción-general)
@@ -15,9 +15,7 @@
 
 ## Descripción General
 
-** Peace & Progress** es una aplicación móvil desarrollada con Expo y React Native que permite a los corredores registrar sus entrenamientos, establecer metas mensuales, visualizar su historial de carreras y recibir frases motivacionales. La aplicación utiliza un sistema de navegación basado en archivos con Expo Router y almacenamiento local para gestionar los datos del usuario.
-
-## Estructura del Proyecto
+**Peace & Progress** es una aplicación móvil desarrollada con Expo y React Native que permite a los corredores registrar sus entrenamientos, establecer metas mensuales, visualizar su historial de carreras y recibir frases motivacionales. La aplicación utiliza un sistema de navegación basado en archivos con Expo Router y almacenamiento local para gestionar los datos del usuario.
 
 ## Estructura del Proyecto
 
@@ -58,6 +56,52 @@ Datos almacenados con AsyncStorage:
 - Preferencias del usuario
 
 ### Sistema de Archivos (Expo FileSystem)
+Para almacenamiento de datos más complejos y estructurados:
+
+```javascript
+// Guardar datos en un archivo JSON
+await FileSystem.writeAsStringAsync(
+  FileSystem.documentDirectory + 'data/entrenamientos.json',
+  JSON.stringify(data)
+);
+
+// Leer datos desde un archivo JSON
+const fileContent = await FileSystem.readAsStringAsync(
+  FileSystem.documentDirectory + 'data/entrenamientos.json'
+);
+const data = JSON.parse(fileContent);
+```
+
+Datos almacenados con FileSystem:
+- Historial de entrenamientos
+- Metas mensuales
+- Configuraciones avanzadas
+
+## Pantallas de la Aplicación
+
+### Bienvenida
+Pantalla de inicio que muestra el nombre de la aplicación y permite al usuario continuar.
+
+### Registro
+Pantalla para recopilar la información básica del usuario:
+- Nombre del corredor
+- Datos personales relevantes
+
+### Principal
+Pantalla central de la aplicación con las siguientes funcionalidades:
+- Resumen de actividad
+- Progreso de meta mensual
+- Botones de navegación a otras pantallas
+- Registro rápido de entrenamientos nuevos
+
+### Metas
+Pantalla para gestionar metas de entrenamiento con las siguientes características:
+- Establecer una nueva meta mensual de distancia
+- Ver metas actuales y su progreso
+- Actualizar metas existentes del mes actual
+- Visualización automática de metas en cambios de mes
+- Prevención de metas duplicadas por mes
+
 ### Historial
 Pantalla para visualizar el historial completo de entrenamientos:
 - Lista de entrenamientos ordenados por fecha (más recientes primero)
@@ -168,7 +212,7 @@ interface Meta {
   distanciaObjetivo: number;  // En kilómetros
   fechaInicio: string;        // Formato: DD-MM-YYYY
   fechaFin: string;           // Formato: DD-MM-YYYY
-  completada: boolean;        // Estado de la meta
+  tipoEntrenamiento: string;  // Tipo de entrenamiento aplicable
 }
 ```
 
@@ -179,40 +223,116 @@ El sistema de metas funciona de la siguiente manera:
 1. **Creación**: El usuario establece una distancia objetivo para un período de 30 días
 2. **Almacenamiento**: La meta se guarda en `data/metas.json` con un ID único
 3. **Seguimiento**: En la pantalla Principal y Metas se muestra el progreso actual
-4. **Cálculo de Progreso**:
+4. **Actualización Mensual Automática**: El sistema detecta cuando comienza un nuevo mes y crea automáticamente una nueva meta basada en la meta del mes anterior
+5. **Actualización de Metas Existentes**: Si el usuario cambia una meta para el mes actual, se actualiza la meta existente en lugar de crear una duplicada
+6. **Cálculo de Progreso**:
    - Se obtienen todos los entrenamientos del mes actual
    - Se suma la distancia total recorrida
    - Se calcula el porcentaje de cumplimiento respecto al objetivo
-   
+
 ```javascript
-// Cálculo de progreso de meta
-const calcularDistanciaMensual = async () => {
+// Verificación y creación automática de metas mensuales
+const verificarMetaMensual = async () => {
   try {
-    // Obtener entrenamientos
-    const entrenamientos = await cargarEntrenamientos();
-    
-    // Filtrar por mes actual
+    const metasCargadas = await cargarMetas();
     const fechaActual = new Date();
-    const mesActual = fechaActual.getMonth() + 1;
-    const anioActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth();
+    const añoActual = fechaActual.getFullYear();
     
-    // Sumar distancias
-    const distanciaMensual = entrenamientos
-      .filter(entrenamiento => {
-        const [dia, mes, anio] = entrenamiento.fecha.split('-').map(Number);
-        return mes === mesActual && anio === anioActual;
-      })
-      .reduce((total, entrenamiento) => total + entrenamiento.distancia, 0);
+    // Verificar si ya existe una meta para el mes actual
+    const existeMetaMesActual = metasCargadas.some((meta) => {
+      const partes = meta.fechaInicio.split('-');
+      const metaFecha = new Date(
+        parseInt(partes[2]), // año
+        parseInt(partes[1]) - 1, // mes (0-11)
+        parseInt(partes[0]) // día
+      );
+      return metaFecha.getMonth() === mesActual && 
+             metaFecha.getFullYear() === añoActual;
+    });
     
-    // Calcular porcentaje completado
-    if (metaActual && Number(metaActual) > 0) {
-      const porcentaje = (distanciaMensual / Number(metaActual)) * 100;
-      setPorcentajeCompletado(Math.min(porcentaje, 100));
+    if (!existeMetaMesActual) {
+      // Buscar y usar la meta del mes anterior para crear la nueva meta
+      const mesAnterior = mesActual === 0 ? 11 : mesActual - 1;
+      const añoMesAnterior = mesActual === 0 ? añoActual - 1 : añoActual;
+      
+      let metaAnterior = metasCargadas.find((meta) => {
+        const partes = meta.fechaInicio.split('-');
+        const metaFecha = new Date(
+          parseInt(partes[2]), 
+          parseInt(partes[1]) - 1, 
+          parseInt(partes[0])
+        );
+        
+        return metaFecha.getMonth() === mesAnterior && 
+               metaFecha.getFullYear() === añoMesAnterior;
+      });
+      
+      if (metaAnterior) {
+        // Crear una nueva meta basada en la del mes anterior
+        await crearNuevaMetaMensual(metaAnterior.distanciaObjetivo);
+      }
     }
   } catch (error) {
-    console.error('Error al calcular distancia mensual:', error);
+    console.error('Error al verificar meta mensual:', error);
   }
 };
+```
+
+## Gestión de Metas por Mes
+
+La aplicación implementa un sistema inteligente de metas mensuales con las siguientes capacidades:
+
+### Actualización Automática de Metas
+
+Al iniciar un nuevo mes, la aplicación:
+1. Detecta automáticamente el cambio de mes
+2. Verifica si existe una meta para el mes actual
+3. Si no existe, busca la meta del mes anterior
+4. Crea una nueva meta basada en la anterior
+5. Notifica al usuario de la creación automática
+
+```javascript
+// Al cargar la pantalla de metas
+useEffect(() => {
+  obtenerNombre();
+  obtenerMetaMensual();
+  cargarMetas().then(() => {
+    // Verificar si necesitamos crear una meta para el nuevo mes
+    verificarMetaMensual();
+  });
+}, []);
+```
+
+### Prevención de Metas Duplicadas
+
+Cuando el usuario actualiza su meta mensual:
+1. El sistema busca si ya existe una meta para el mes actual
+2. Si existe, actualiza los valores de la meta existente en lugar de crear una nueva
+3. Si no existe, crea una nueva meta para el mes
+
+```javascript
+// Buscar si ya existe una meta para el mes actual
+const metaIndex = metas.findIndex((meta) => {
+  const partes = meta.fechaInicio.split('-');
+  const metaFecha = new Date(
+    parseInt(partes[2]), // año
+    parseInt(partes[1]) - 1, // mes (0-11)
+    parseInt(partes[0]) // día
+  );
+  
+  // Verificar si la meta es del mes actual
+  return metaFecha.getMonth() === currentMonth && 
+         metaFecha.getFullYear() === currentYear;
+});
+
+if (metaIndex !== -1) {
+  // Actualizar la meta existente del mes actual
+  metas[metaIndex].distanciaObjetivo = parseFloat(metaMensual);
+} else {
+  // Si no hay meta para este mes, crear una nueva
+  // ...
+}
 ```
 
 ## Componentes Principales
@@ -274,15 +394,16 @@ La aplicación utiliza varias imágenes clave para mejorar la experiencia del us
 
 ### Recursos de Datos
 
-- **Frases.json**: Contiene todas las frases motivacionales disponibles en la aplicación.  ```json
-  [
-    {
-      "id": 1,
-      "frase": "El único mal entrenamiento es el que no se hace."
-    },
-    ...
-  ]
-  ```
+- **Frases.json**: Contiene todas las frases motivacionales disponibles en la aplicación.
+```json
+[
+  {
+    "id": 1,
+    "frase": "El único mal entrenamiento es el que no se hace."
+  },
+  ...
+]
+```
 
 ## Configuración del Proyecto
 
@@ -293,8 +414,8 @@ El proyecto está configurado mediante el archivo `app.json`:
 ```json
 {
   "expo": {
-    "name": " Peace & Progress",
-    "slug": " Peace & Progress",
+    "name": "Peace & Progress",
+    "slug": "Peace-Progress",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/android/play_store_512.png",
@@ -308,7 +429,7 @@ El proyecto está configurado mediante el archivo `app.json`:
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com. Peace & Progress"
+      "bundleIdentifier": "com.Peace-Progress"
     },
     "android": {
       "adaptiveIcon": {
@@ -316,7 +437,7 @@ El proyecto está configurado mediante el archivo `app.json`:
         "backgroundImage": "./assets/images/android/res/mipmap-xxxhdpi/ic_launcher_background.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com. Peace & Progress"
+      "package": "com.Peace-Progress"
     },
     "web": {
       "bundler": "metro",
@@ -401,6 +522,8 @@ El proyecto utiliza las siguientes dependencias principales:
    - El usuario puede crear una meta mensual
    - El sistema actualiza el progreso en tiempo real
    - Las metas se guardan en el archivo de metas
+   - El sistema previene la duplicación de metas para el mismo mes
+   - Al iniciar un nuevo mes, se crea automáticamente una nueva meta
 
 6. **Frases Motivacionales**:
    - El usuario puede generar frases motivacionales aleatorias
@@ -408,87 +531,8 @@ El proyecto utiliza las siguientes dependencias principales:
 
 ## Conclusión
 
- Peace & Progress es una aplicación completa para corredores que integra funcionalidades de registro, seguimiento y motivación. Su diseño modular y sistema de almacenamiento local permiten una experiencia fluida sin necesidad de conexión a internet constante. El sistema de temas claro/oscuro y las interfaces adaptativas garantizan una buena experiencia de usuario en diferentes condiciones de uso.
-Pantalla para gestionar metas de entrenamiento con las siguientes características:
-- Establecer una nueva meta mensual de distancia
-- Ver metas actuales y su progreso
-- Cancelar o marcar metas como completadas
-
-### Historial
-Muestra el historial de actividades y entrenamientos del usuario.
-
-### Frases
-Presenta frases motivacionales para los usuarios, obtenidas desde un archivo JSON.
-
-## Recursos y Assets
-
-### Imágenes
-- **Pantallas**: Imágenes específicas para cada pantalla (Bienvenida.jpg, Metas.jpg, etc.)
-- **Íconos**: Diferentes tamaños y formatos para Android e iOS
-- **Logos**: Diversos recursos gráficos para la aplicación
-
-### Datos
-- **FrasesData/Frases.json**: Contiene las frases motivacionales mostradas en la app
-- **Data/Data.json**: Almacena datos generales de la aplicación
-
-### Fuentes
-- **SpaceMono-Regular.ttf**: Fuente utilizada en la aplicación
-
-## Configuración del Proyecto
-
-### app.json
-Configuración principal de Expo con las siguientes características:
-- Nombre de la aplicación: "Pace & Progress"
-- Configuraciones específicas para Android e iOS
-- Configuración del splash screen
-- Configuración de íconos adaptables
-
-### eas.json
-Configuración para Expo Application Services (EAS) para compilación, envío y actualizaciones.
-
-### tsconfig.json
-Configuración de TypeScript para el proyecto, gestionada automáticamente por Expo.
-
-## Dependencias
-
-### Principales
-- **expo**: Framework para desarrollo multiplataforma
-- **expo-router**: Sistema de navegación basado en archivos
-- **react-native**: Framework de desarrollo móvil
-- **@react-navigation**: Librería de navegación
-- **@expo/vector-icons**: Conjunto de iconos
-- **@react-native-async-storage/async-storage**: Almacenamiento persistente
-
-### UI y Experiencia de Usuario
-- **expo-blur**: Efectos de desenfoque
-- **expo-haptics**: Retroalimentación háptica
-- **expo-image**: Manejo optimizado de imágenes
-- **react-native-gesture-handler**: Manejo avanzado de gestos
-- **react-native-reanimated**: Animaciones fluidas
-- **react-native-modal-datetime-picker**: Selector de fecha y hora
-
-### Herramientas de Desarrollo
-- **typescript**: Tipado estático
-- **eslint**: Linting de código
-- **@babel/core**: Transpilación de JavaScript
-
-## Convenciones de Código
-
-El proyecto utiliza TypeScript para tipado estático y sigue las convenciones de React y React Native. Los componentes están organizados en archivos individuales y se agrupan por funcionalidad.
-
-La navegación se realiza mediante Expo Router, que permite una navegación basada en la estructura de archivos, similar a Next.js.
-
-El almacenamiento local se maneja principalmente a través de AsyncStorage, encapsulado en funciones de utilidad en el archivo `utils/storage.ts`.
-
-## Instrucciones para Desarrollo
-
-Para iniciar el desarrollo:
-
-1. Instalar dependencias: `npm install`
-2. Iniciar la aplicación: `npx expo start`
-3. Abrir en emulador: Presiona `a` para Android o `i` para iOS
-4. Escanear QR para Expo Go: Utiliza la app Expo Go en tu dispositivo
+Peace & Progress es una aplicación completa para corredores que integra funcionalidades de registro, seguimiento y motivación. Su diseño modular y sistema de almacenamiento local permiten una experiencia fluida sin necesidad de conexión a internet constante. El sistema de temas claro/oscuro y las interfaces adaptativas garantizan una buena experiencia de usuario en diferentes condiciones de uso.
 
 ---
 
-*Documentación creada para el proyecto Pace & Progress - Junio 2025*
+*Documentación actualizada para el proyecto Peace & Progress - Junio 2025*

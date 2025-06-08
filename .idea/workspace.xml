@@ -7,12 +7,7 @@
     <list default="true" id="2c292850-667e-4a7e-a95d-d70ca74c1d07" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DOCUMENTACION.md" beforeDir="false" afterPath="$PROJECT_DIR$/DOCUMENTACION.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Historial/Historial.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Historial/Historial.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Metas/Metas.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Metas/Metas.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Principal/Principal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Principal/Principal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Registro/Registro.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Registro/Registro.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/_layout.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
