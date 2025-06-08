@@ -5,31 +5,40 @@ import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { AntDesign } from '@expo/vector-icons'; // Asegúrate de que AntDesign esté importado
+import { AntDesign } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useState } from 'react'; // Importa useEffect
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 
 
 export default function FrasesScreen() {
-  // Place all hooks at the top level
+ 
   const colorScheme = useColorScheme();
   const textColor = useThemeColor({}, 'text');
 
   // Estado para almacenar la frase actual
-  const [fraseActual, setFraseActual] = useState('');
-
-  const mostrarFraseAleatoria = () => {
+  const [fraseActual, setFraseActual] = useState('');  // Función para generar frase aleatoria sin mostrar alerta
+  const generarFraseAleatoria = () => {
     const indiceAleatorio = Math.floor(Math.random() * frases.length);
     const nuevaFrase = frases[indiceAleatorio].frase;
     setFraseActual(nuevaFrase);
+    return nuevaFrase;
   };
-
+  
+  // Función para el botón que muestra la frase y la alerta
+  const mostrarFraseAleatoria = () => {
+    const nuevaFrase = generarFraseAleatoria();
+    Alert.alert('¡Motívate!', nuevaFrase, [
+      { text: 'Gracias', style: 'default' }
+    ]);
+  };
+  
+  // Mostrar una frase aleatoria al cargar el componente
+  useEffect(() => {
+    generarFraseAleatoria();
+  }, []);
   // Determinar colores para elementos de la interfaz basados en el tema
-  const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
-  const inputBorderColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.lightSlate;
-  const placeholderColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
-  const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
+  const buttonColor = Colors.palette.slateBlue; // El mismo color para ambos temas
 
 
   return (
@@ -66,12 +75,12 @@ export default function FrasesScreen() {
         </ThemedView>
 
 
-        {/* Botón para generar nueva frase */}
+      {/* Botón para generar nueva frase */}
         <TouchableOpacity
           style={[styles.frasesButton, { backgroundColor: buttonColor }]}
           onPress={mostrarFraseAleatoria}
         >
-          <AntDesign name="save" size={16} color="#fff" style={styles.buttonIcon} />
+          <AntDesign name="bulb1" size={16} color="#fff" style={styles.buttonIcon} />
           <ThemedText style={styles.loginButtonText}>
             Generar Frase
           </ThemedText>

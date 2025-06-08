@@ -41,7 +41,7 @@
   },
   {
     "id": 11,
-    "frase": "El dolor es temporal, el orgullo es para siempre."
+    "frase": "El dolor muscular es temporal, el orgullo de superarte es para siempre."
   },
   {
     "id": 12,
@@ -61,7 +61,7 @@
   },
   {
     "id": 16,
-    "frase": "El éxito no es la clave de la felicidad. La felicidad es la clave del éxito. Si amas lo que estás haciendo, tendrás éxito."
+    "frase": "Si amas entrenar, el éxito llegará naturalmente."
   },
   {
     "id": 17,
@@ -69,11 +69,11 @@
   },
   {
     "id": 18,
-    "frase": "No se trata de tener tiempo, se trata de hacer tiempo."
+    "frase": "No se trata de tener tiempo para entrenar, se trata de hacer tiempo."
   },
   {
     "id": 19,
-    "frase": "Tu futuro se crea por lo que haces hoy, no mañana."
+    "frase": "Tu condición física se crea por lo que haces hoy, no mañana."
   },
   {
     "id": 20,
@@ -81,7 +81,7 @@
   },
   {
     "id": 21,
-    "frase": "No hay atajos para ningún lugar al que valga la pena ir."
+    "frase": "No hay atajos para ningún lugar al que valga la pena llegar corriendo."
   },
   {
     "id": 22,
@@ -89,11 +89,11 @@
   },
   {
     "id": 23,
-    "frase": "Cree en ti mismo y todo será posible."
+    "frase": "Cree en tu fuerza y todo será posible."
   },
   {
     "id": 24,
-    "frase": "Si quieres algo que nunca has tenido, tendrás que hacer algo que nunca has hecho."
+    "frase": "Si quieres un cuerpo que nunca has tenido, tendrás que entrenar como nunca has entrenado."
   },
   {
     "id": 25,
@@ -105,7 +105,7 @@
   },
   {
     "id": 27,
-    "frase": "La única forma de hacer un gran trabajo es amar lo que haces."
+    "frase": "La única forma de hacer un gran entrenamiento es amar lo que haces."
   },
   {
     "id": 28,
@@ -113,10 +113,50 @@
   },
   {
     "id": 29,
-    "frase": "La persistencia transforma el fracaso en un logro extraordinario."
+    "frase": "La persistencia en el entrenamiento transforma el fracaso en un logro extraordinario."
   },
   {
     "id": 30,
-    "frase": "No te rindas. Sufre ahora y vive el resto de tu vida como un campeón."
+    "frase": "No te rindas. Entrena duro ahora y vive el resto de tu vida como un campeón."
+  },
+  {
+    "id": 31,
+    "frase": "Cada repetición te acerca más a tu mejor versión."
+  },
+  {
+    "id": 32,
+    "frase": "No es sobre ser perfecto, es sobre ser mejor que ayer."
+  },
+  {
+    "id": 33,
+    "frase": "Tu zona de confort es donde mueren tus sueños fitness."
+  },
+  {
+    "id": 34,
+    "frase": "El gimnasio no es solo para cambiar tu cuerpo, sino para fortalecer tu mente."
+  },
+  {
+    "id": 35,
+    "frase": "Cada gota de sudor es una inversión en tu futuro yo."
+  },
+  {
+    "id": 36,
+    "frase": "Los músculos se construyen con constancia, no con intensidad ocasional."
+  },
+  {
+    "id": 37,
+    "frase": "Tu ritmo cardíaco elevado es el sonido de tu progreso."
+  },
+  {
+    "id": 38,
+    "frase": "No entrenes hasta que tengas ganas, entrena hasta que sea un hábito."
+  },
+  {
+    "id": 39,
+    "frase": "La fatiga es el precio que pagas por la transformación."
+  },
+  {
+    "id": 40,
+    "frase": "Tu cuerpo es tu templo, trátalo como tal con cada entrenamiento."
   }
 ]

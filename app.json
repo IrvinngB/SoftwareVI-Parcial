@@ -1,21 +1,24 @@
 {
   "expo": {
-    "name": "Parcial2",
-    "slug": "Parcial2",
+    "name": "Pace & Progress",
+    "slug": "pace-and-progress",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/Logo.png",
-    "scheme": "Pace & Progress",
+    "icon": "./assets/images/android/play_store_512.png",
+    "scheme": "paceandprogress",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.parcial.paceandprogress",
+      "icon": "./assets/images/ios/AppIcon.png"
     },
     "android": {
       "package": "com.parcial.paceandprogress",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/Logo.png",
+        "foregroundImage": "./assets/images/android/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+        "backgroundImage": "./assets/images/android/res/mipmap-xxxhdpi/ic_launcher_background.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true
@@ -23,28 +26,19 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/Logo.png"
+      "favicon": "./assets/images/android/play_store_512.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/android/play_store_512.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#ffffff",
+          "resizeMode": "contain"
         }
       ]
-    ],
-    "experiments": {
-      "typedRoutes": true
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "e3f3b4ef-9c91-42df-b305-dd0709f40be2"
-      }
-    }
+    ]
   }
 }
