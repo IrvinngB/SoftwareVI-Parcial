@@ -42,11 +42,25 @@ export default function RegistroScreen() {
 
   useEffect(() => {
     obtenerNombre();
-  }, []);
-    // Función para manejar el cambio de fecha
+  }, []);  // Función para manejar el cambio de fecha
   const onChange = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(Platform.OS === 'ios');
+    
+    // Verificar que la fecha no sea futura
+    const hoy = new Date();
+    // Establecemos la hora al final del día para permitir el día actual
+    hoy.setHours(23, 59, 59, 999);
+    
+    if (currentDate > hoy) {
+      Alert.alert(
+        "Fecha no válida", 
+        "No puedes registrar entrenamientos con fechas futuras.",
+        [{ text: "Entendido" }]
+      );
+      return;
+    }
+    
     setDate(currentDate);
     
     // Formato de fecha: DD-MM-YYYY
@@ -80,7 +94,7 @@ export default function RegistroScreen() {
       let entrenamientos = [];
       let maxId = 0;
 
-      // Check if file exists and read current data
+      
       const fileInfo = await FileSystem.getInfoAsync(jsonFilePath);
       if (fileInfo.exists) {
         const fileContent = await FileSystem.readAsStringAsync(jsonFilePath);
@@ -96,7 +110,7 @@ export default function RegistroScreen() {
       // Create new entry with auto-generated ID
       const nuevoEntrenamiento = {
         id: maxId + 1,
-        nombre: nombre,
+        
         fecha: fecha,
         distancia: parseFloat(distancia),
         tiempo: parseInt(time, 10),
@@ -104,7 +118,7 @@ export default function RegistroScreen() {
         tipoEntrenamiento: tipoEntrenamiento // Add tipoEntrenamiento field
       };
 
-      // Add to array and save
+      // Array y guardar el nuevo entrenamiento
       entrenamientos.push(nuevoEntrenamiento);
       await FileSystem.writeAsStringAsync(jsonFilePath, JSON.stringify(entrenamientos, null, 2));
 
@@ -116,7 +130,7 @@ export default function RegistroScreen() {
         console.error('Error al leer el archivo guardado:', error);
       }
 
-      // Clear input fields
+      
       setFecha('');
       setDistancia('');
       setTime('');

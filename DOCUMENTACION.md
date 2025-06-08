@@ -1,4 +1,4 @@
-# Documentación del Proyecto RunTracker
+# Documentación del Proyecto  Peace & Progress
 
 ## Índice
 1. [Descripción General](#descripción-general)
@@ -15,7 +15,7 @@
 
 ## Descripción General
 
-**RunTracker** es una aplicación móvil desarrollada con Expo y React Native que permite a los corredores registrar sus entrenamientos, establecer metas mensuales, visualizar su historial de carreras y recibir frases motivacionales. La aplicación utiliza un sistema de navegación basado en archivos con Expo Router y almacenamiento local para gestionar los datos del usuario.
+** Peace & Progress** es una aplicación móvil desarrollada con Expo y React Native que permite a los corredores registrar sus entrenamientos, establecer metas mensuales, visualizar su historial de carreras y recibir frases motivacionales. La aplicación utiliza un sistema de navegación basado en archivos con Expo Router y almacenamiento local para gestionar los datos del usuario.
 
 ## Estructura del Proyecto
 
@@ -293,8 +293,8 @@ El proyecto está configurado mediante el archivo `app.json`:
 ```json
 {
   "expo": {
-    "name": "RunTracker",
-    "slug": "runtracker",
+    "name": " Peace & Progress",
+    "slug": " Peace & Progress",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/android/play_store_512.png",
@@ -308,7 +308,7 @@ El proyecto está configurado mediante el archivo `app.json`:
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.runtracker"
+      "bundleIdentifier": "com. Peace & Progress"
     },
     "android": {
       "adaptiveIcon": {
@@ -316,7 +316,7 @@ El proyecto está configurado mediante el archivo `app.json`:
         "backgroundImage": "./assets/images/android/res/mipmap-xxxhdpi/ic_launcher_background.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.runtracker"
+      "package": "com. Peace & Progress"
     },
     "web": {
       "bundler": "metro",
@@ -408,7 +408,7 @@ El proyecto utiliza las siguientes dependencias principales:
 
 ## Conclusión
 
-RunTracker es una aplicación completa para corredores que integra funcionalidades de registro, seguimiento y motivación. Su diseño modular y sistema de almacenamiento local permiten una experiencia fluida sin necesidad de conexión a internet constante. El sistema de temas claro/oscuro y las interfaces adaptativas garantizan una buena experiencia de usuario en diferentes condiciones de uso.
+ Peace & Progress es una aplicación completa para corredores que integra funcionalidades de registro, seguimiento y motivación. Su diseño modular y sistema de almacenamiento local permiten una experiencia fluida sin necesidad de conexión a internet constante. El sistema de temas claro/oscuro y las interfaces adaptativas garantizan una buena experiencia de usuario en diferentes condiciones de uso.
 Pantalla para gestionar metas de entrenamiento con las siguientes características:
 - Establecer una nueva meta mensual de distancia
 - Ver metas actuales y su progreso

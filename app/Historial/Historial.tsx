@@ -3,7 +3,6 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useThemeColor } from '@/hooks/useThemeColor';
 import { STORAGE_PATHS } from '@/utils/storage';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,7 +23,7 @@ interface Entrenamiento {
 export default function HistorialScreen() {
     // Place all hooks at the top level
     const colorScheme = useColorScheme();
-    const textColor = useThemeColor({}, 'text');
+    // No vamos a usar textColor, así que lo removemos
 
     // Estado para el nombre del corredor (para input y visualización)
     const [nombre, setNombre] = useState<string>('');
@@ -89,12 +88,10 @@ export default function HistorialScreen() {
     useEffect(() => {
         obtenerNombre();
         cargarEntrenamientos();
-    }, []);
-
-    // Función para eliminar un entrenamiento
+    }, []);    // Función para eliminar un entrenamiento
     const eliminarEntrenamiento = async (id: string): Promise<void> => {
         try {
-            const jsonFilePath = FileSystem.documentDirectory + 'entrenamientos.json';
+            const jsonFilePath = STORAGE_PATHS.ENTRENAMIENTOS;
             const fileInfo = await FileSystem.getInfoAsync(jsonFilePath);
 
             if (fileInfo.exists) {
@@ -117,12 +114,7 @@ export default function HistorialScreen() {
             console.error('Error al eliminar entrenamiento:', error);
             Alert.alert('Error', 'No se pudo eliminar el entrenamiento');
         }
-    };
-
-    // Determinar colores para elementos de la interfaz basados en el tema
-    const inputBgColor = colorScheme === 'dark' ? Colors.palette.navy : '#fff';
-    const inputBorderColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.lightSlate;
-    const placeholderColor = colorScheme === 'dark' ? Colors.palette.lightSlate : Colors.palette.slateBlue;
+    };    // Determinar colores para elementos de la interfaz basados en el tema
     const buttonColor = colorScheme === 'dark' ? Colors.palette.slateBlue : Colors.palette.slateBlue;
 
     return (

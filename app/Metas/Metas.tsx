@@ -103,12 +103,15 @@ export default function MetasScreen() {
         fechaFin: formatDate(endDate),
         tipoEntrenamiento: 'Todos' // Por defecto incluye todos los tipos
       };
-      
-      // Add to array and save
+        // Add to array and save
       metas.push(nuevaMeta);
       await FileSystem.writeAsStringAsync(jsonFilePath, JSON.stringify(metas, null, 2));
       
+      // Guardar la meta y sus fechas en AsyncStorage para que sean accesibles desde otras pantallas
       await AsyncStorage.setItem('meta_mensual', metaMensual);
+      await AsyncStorage.setItem('fecha_inicio_meta', nuevaMeta.fechaInicio);
+      await AsyncStorage.setItem('fecha_fin_meta', nuevaMeta.fechaFin);
+      
       setMetaActual(metaMensual);
       setMetaMensual('');
       setShowMetaInput(false);
