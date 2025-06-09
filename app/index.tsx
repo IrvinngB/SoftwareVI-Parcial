@@ -137,7 +137,7 @@ export default function Index() {
           >
             <AntDesign name="close" size={16} color="#fff" style={styles.buttonIcon} />
             <ThemedText style={styles.loginButtonText}>
-              Cancelar
+              Continuar sin Cambiar
             </ThemedText>
           </TouchableOpacity>
         )}

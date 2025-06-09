@@ -127,7 +127,7 @@ export default function MetasScreen() {
       // Crear una nueva meta para el mes actual
       const nuevaMeta = {
         id: maxId + 1,
-        nombre: `Meta mensual de ${nombre} - ${obtenerNombreMes(startDate.getMonth())}`,
+        nombre: `Meta mensual - ${obtenerNombreMes(startDate.getMonth())}`,
         distanciaObjetivo: distanciaObjetivo,
         fechaInicio: formatDate(startDate),
         fechaFin: formatDate(endDate),
