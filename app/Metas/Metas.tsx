@@ -410,6 +410,7 @@ export default function MetasScreen() {
                 placeholder="Ejemplo: 80"
                 placeholderTextColor={placeholderColor}
                 keyboardType="numeric"
+                maxLength={4}
               />
               <TouchableOpacity
                 style={[styles.loginButton, { backgroundColor: buttonColor, marginTop: 10 }]}

@@ -222,11 +222,18 @@ export default function RegistroScreen() {
               color: textColor
             }]}
             value={distancia}
-            onChangeText={setDistancia}
+            onChangeText={(text) => {
+              // Permite solo números con hasta 3 dígitos enteros y 2 decimales
+              const regex = /^(\d{1,3})([.]\d{0,2})?$/;
+              if (text === '' || regex.test(text)) {
+                setDistancia(text);
+              }
+            }}
             placeholder="Ejemplo: 5"
             placeholderTextColor={placeholderColor}
-            keyboardType="numeric"
+            keyboardType="decimal-pad"
             autoCapitalize="words"
+            maxLength={6}
           />
         </ThemedView>
 
@@ -246,6 +253,7 @@ export default function RegistroScreen() {
             placeholderTextColor={placeholderColor}
             keyboardType="numeric"
             autoCapitalize="words"
+           maxLength={3} // Limitar a 3 dígitos para minutos
           />
         </ThemedView>
 
